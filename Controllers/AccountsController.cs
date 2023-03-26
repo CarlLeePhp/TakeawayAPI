@@ -36,7 +36,8 @@ namespace TakeawayAPI.Controllers
             var user = new ApplicationUser()
             {
                 Email = registerRequest.Email.ToLower(),
-                UserName = registerRequest.UserName
+                UserName = registerRequest.UserName,
+                Address = registerRequest.Address,
             };
             var result = await _userManager.CreateAsync(user, registerRequest.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
