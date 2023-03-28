@@ -16,13 +16,13 @@ namespace TakeawayAPI.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JwtHandler _jwtHandler;
+        private readonly TokenService _tokenService;
         public AccountsController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager, JwtHandler jwtHandler)
+            UserManager<ApplicationUser> userManager, TokenService tokenService)
         {
             _context = context;
             _userManager = userManager;
-            _jwtHandler = jwtHandler;
+            _tokenService = tokenService;
         }
         [HttpPost("register")]
         public async Task<ActionResult<LoginResult>> Regiset(RegisterRequest registerRequest)
@@ -41,23 +41,23 @@ namespace TakeawayAPI.Controllers
             };
             var result = await _userManager.CreateAsync(user, registerRequest.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
-            var secToken = await _jwtHandler.GetTokenAsync(user);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
+
             return new LoginResult
             {
-                Success= true,
+                Success = true,
                 Message = "Register successful.",
                 Email = user.Email,
                 UserName = user.UserName,
-                Token = jwt
+                Token = await _tokenService.GenerateToken(user)
             };
 
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest loginRequest)
+        public async Task<ActionResult<LoginResult>> Login(LoginRequest loginRequest)
         {
             var user = await _userManager.FindByEmailAsync(loginRequest.Email);
+            // could be FindByName
             if (user == null
                 || !await _userManager.CheckPasswordAsync(user, loginRequest.Password))
                 return Unauthorized(new LoginResult()
@@ -65,15 +65,15 @@ namespace TakeawayAPI.Controllers
                     Success = false,
                     Message = "Invalid Email or Password"
                 });
-            var secToken = await _jwtHandler.GetTokenAsync(user);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
+
+            await _userManager.AddToRoleAsync(user, "Customer");
             return Ok(new LoginResult()
             {
                 Success = true,
                 Message = "login Successful",
                 Email = user.Email,
                 UserName = user.UserName,
-                Token = jwt
+                Token = await _tokenService.GenerateToken(user)
             });
         }
     }
