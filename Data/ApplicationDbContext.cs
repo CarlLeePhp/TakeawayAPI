@@ -10,6 +10,9 @@ namespace TakeawayAPI.Data
         public ApplicationDbContext() : base() { }
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Dish> Dish { get; set; }
+
         // we can add data by this way
         protected override void OnModelCreating(ModelBuilder builder)
         {
