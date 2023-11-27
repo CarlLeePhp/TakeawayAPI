@@ -75,4 +75,19 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Seed data
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+try
+{
+    context.Database.Migrate(); // Create a database if there is no one
+    DbInitializer.Initialize(context, userManager);
+}
+catch (System.Exception ex)
+{
+    logger.LogError(ex, "A problem occurred during migration");
+}
+
 app.Run();

@@ -3,10 +3,10 @@
     public class Dish
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string PictureUrl { get; set; }
         public float Price { get; set; }
-        public string MyProperty { get; set; } = string.Empty;
         public float Discount { get; set; }
 
         public int CategoryId { get; set; }

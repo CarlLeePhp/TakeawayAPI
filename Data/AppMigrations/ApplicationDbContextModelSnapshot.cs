@@ -51,15 +51,15 @@ namespace TakeawayAPI.Data.AppMigrations
                     b.HasData(
                         new
                         {
-                            Id = "ccc43c28-43c2-400b-bfba-2bc77a4ccaa6",
-                            ConcurrencyStamp = "55a2cea9-9898-42d9-b563-373facc05ff8",
+                            Id = "b09e63aa-d785-49e5-882a-57c27cbdf566",
+                            ConcurrencyStamp = "56891721-0c07-47b4-8f76-c90bbe4f6ffb",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "500fc115-4365-4a67-85bd-9f8daec66264",
-                            ConcurrencyStamp = "b339f319-0908-4956-b13d-bea905b00242",
+                            Id = "ef2fed10-e1da-4b01-861c-376d0644e5b9",
+                            ConcurrencyStamp = "8d6a6173-de7e-47fc-a0e0-b424040d9b6e",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         });
@@ -180,7 +180,6 @@ namespace TakeawayAPI.Data.AppMigrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -249,7 +248,6 @@ namespace TakeawayAPI.Data.AppMigrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -269,18 +267,15 @@ namespace TakeawayAPI.Data.AppMigrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Discount")
                         .HasColumnType("real");
 
-                    b.Property<string>("MyProperty")
-                        .IsRequired()
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
