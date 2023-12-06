@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TakeawayAPI.Data.AppMigrations
 {
-    public partial class rebuid : Migration
+    public partial class BasketAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,6 +47,19 @@ namespace TakeawayAPI.Data.AppMigrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Basket",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ByerId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Basket", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,15 +205,42 @@ namespace TakeawayAPI.Data.AppMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b09e63aa-d785-49e5-882a-57c27cbdf566", "56891721-0c07-47b4-8f76-c90bbe4f6ffb", "Customer", "CUSTOMER" });
+            migrationBuilder.CreateTable(
+                name: "BasketItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    DishId = table.Column<int>(type: "int", nullable: false),
+                    BasketId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BasketItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BasketItem_Basket_BasketId",
+                        column: x => x.BasketId,
+                        principalTable: "Basket",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BasketItem_Dish_DishId",
+                        column: x => x.DishId,
+                        principalTable: "Dish",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "ef2fed10-e1da-4b01-861c-376d0644e5b9", "8d6a6173-de7e-47fc-a0e0-b424040d9b6e", "Manager", "MANAGER" });
+                values: new object[] { "221ab9d4-bcdc-475a-a5dd-76a7915bf815", "745712b0-88c5-48f6-878e-3c09fdb798a9", "Manager", "MANAGER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "df0bcc96-2cf4-4f39-bde5-cdc10655d607", "9473ee66-062f-4c31-b689-2c5ceee77602", "Customer", "CUSTOMER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -242,6 +282,16 @@ namespace TakeawayAPI.Data.AppMigrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BasketItem_BasketId",
+                table: "BasketItem",
+                column: "BasketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BasketItem_DishId",
+                table: "BasketItem",
+                column: "DishId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Dish_CategoryId",
                 table: "Dish",
                 column: "CategoryId");
@@ -265,13 +315,19 @@ namespace TakeawayAPI.Data.AppMigrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Dish");
+                name: "BasketItem");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Basket");
+
+            migrationBuilder.DropTable(
+                name: "Dish");
 
             migrationBuilder.DropTable(
                 name: "Category");

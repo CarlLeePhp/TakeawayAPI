@@ -12,8 +12,8 @@ using TakeawayAPI.Data;
 namespace TakeawayAPI.Data.AppMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231127083808_rebuid")]
-    partial class rebuid
+    [Migration("20231204000308_BasketBuyerId")]
+    partial class BasketBuyerId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,15 +53,15 @@ namespace TakeawayAPI.Data.AppMigrations
                     b.HasData(
                         new
                         {
-                            Id = "b09e63aa-d785-49e5-882a-57c27cbdf566",
-                            ConcurrencyStamp = "56891721-0c07-47b4-8f76-c90bbe4f6ffb",
+                            Id = "872b0ce3-6471-468c-ad15-1ca933c5bcb7",
+                            ConcurrencyStamp = "f3625517-3717-41d6-a62f-61e58749c002",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "ef2fed10-e1da-4b01-861c-376d0644e5b9",
-                            ConcurrencyStamp = "8d6a6173-de7e-47fc-a0e0-b424040d9b6e",
+                            Id = "997be29c-48f0-4bd3-93e9-ac9f0bb3583f",
+                            ConcurrencyStamp = "3cec4ca9-6491-42ae-9050-9b7b7f46da8f",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         });
@@ -241,6 +241,48 @@ namespace TakeawayAPI.Data.AppMigrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("TakeawayAPI.Data.Models.Basket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("BuyerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Basket");
+                });
+
+            modelBuilder.Entity("TakeawayAPI.Data.Models.BasketItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BasketId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DishId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BasketId");
+
+                    b.HasIndex("DishId");
+
+                    b.ToTable("BasketItem");
+                });
+
             modelBuilder.Entity("TakeawayAPI.Data.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -341,6 +383,25 @@ namespace TakeawayAPI.Data.AppMigrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TakeawayAPI.Data.Models.BasketItem", b =>
+                {
+                    b.HasOne("TakeawayAPI.Data.Models.Basket", "Basket")
+                        .WithMany("Items")
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TakeawayAPI.Data.Models.Dish", "Dish")
+                        .WithMany()
+                        .HasForeignKey("DishId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Basket");
+
+                    b.Navigation("Dish");
+                });
+
             modelBuilder.Entity("TakeawayAPI.Data.Models.Dish", b =>
                 {
                     b.HasOne("TakeawayAPI.Data.Models.Category", "Category")
@@ -350,6 +411,11 @@ namespace TakeawayAPI.Data.AppMigrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("TakeawayAPI.Data.Models.Basket", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

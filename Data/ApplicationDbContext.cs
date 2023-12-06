@@ -13,6 +13,8 @@ namespace TakeawayAPI.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<Dish> Dish { get; set; }
 
+        public DbSet<Basket> Basket { get; set; }
+
         // we can add data by this way
         protected override void OnModelCreating(ModelBuilder builder)
         {

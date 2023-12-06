@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TakeawayAPI.Data;
+using TakeawayAPI.Data.DTOs;
 using TakeawayAPI.Data.Models;
 
 namespace TakeawayAPI.Controllers
@@ -14,20 +15,42 @@ namespace TakeawayAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Dish>> GetDishes()
+        public ActionResult<List<DishDto>> GetDishes()
         {
             var dishes = _context.Dish.Include(d => d.Category).ToList();
+            List<DishDto> dishDtos = new List<DishDto>();
+            foreach (var dish in dishes)
+            {
+                dishDtos.Add(new DishDto
+                {
+                    Id = dish.Id,
+                    Name = dish.Name,
+                    Description = dish.Description,
+                    Price = dish.Price,
+                    CategoryId = dish.CategoryId,
+                    CategoryName = dish.Category.Description
+                });
+            }
 
-            return Ok(dishes);
+            return Ok(dishDtos);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Dish> GetDish(int id)
+        public ActionResult<DishDto> GetDish(int id)
         {
             var dish = _context.Dish.Include(d => d.Category).FirstOrDefault(d => d.Id == id);
             if (dish == null) { return NotFound(); }
+            DishDto dishDto = new DishDto
+            {
+                Id = dish.Id,
+                Name = dish.Name,
+                Description = dish.Description,
+                Price = dish.Price,
+                CategoryId = dish.CategoryId,
+                CategoryName = dish.Category.Description
+            };
 
-            return Ok(dish);
+            return Ok(dishDto);
         }
 
         [HttpPost]

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TakeawayAPI.Data;
+using TakeawayAPI.Data.DTOs;
 using TakeawayAPI.Data.Models;
 
 namespace TakeawayAPI.Controllers
@@ -14,20 +15,51 @@ namespace TakeawayAPI.Controllers
             _context = context;
         }
         [HttpGet]
-        public async  Task<ActionResult<List<Category>>> GetCategories()
+        public async  Task<ActionResult<List<CategoryDto>>> GetCategories()
         {
-            var categories = await _context.Category.ToListAsync();
+            var categories = await _context.Category.Include(c => c.Dishes).ToListAsync();
+            List<CategoryDto> categoryDtos = new List<CategoryDto>();
+            foreach (var category in categories)
+            {
+                categoryDtos.Add(new CategoryDto
+                {
+                    Id = category.Id,
+                    Description = category.Description,
+                    DishDtos = category.Dishes.Select(d => new DishDto
+                    {
+                        Id = d.Id,
+                        Name = d.Name,
+                        Description = d.Description,
+                        Price = d.Price,
+                        CategoryId = d.CategoryId,
+                        CategoryName = category.Description
+                    }).ToList()
+                });
+            }
 
-            return Ok(categories);
+            return Ok(categoryDtos);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
-            var category = await _context.Category.FirstOrDefaultAsync(c => c.Id == id);
+            var category = await _context.Category.Include(c => c.Dishes).FirstOrDefaultAsync(c => c.Id == id);
             if(category == null) { return NotFound(); }
-
-            return category;
+            CategoryDto categoryDto = new CategoryDto
+            {
+                Id = category.Id,
+                Description = category.Description,
+                DishDtos = category.Dishes.Select(d => new DishDto
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    Description = d.Description,
+                    Price = d.Price,
+                    CategoryId = d.CategoryId,
+                    CategoryName = category.Description
+                }).ToList()
+            };
+            return categoryDto;
         }
 
         [HttpPost]

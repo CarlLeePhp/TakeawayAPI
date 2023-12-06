@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TakeawayAPI.Data;
 
@@ -11,9 +12,10 @@ using TakeawayAPI.Data;
 namespace TakeawayAPI.Data.AppMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231203235659_BasketAdded")]
+    partial class BasketAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +53,15 @@ namespace TakeawayAPI.Data.AppMigrations
                     b.HasData(
                         new
                         {
-                            Id = "e146860b-87cd-48c7-818f-c6e4df00019b",
-                            ConcurrencyStamp = "5bfa886a-a83c-4b57-88a4-0cefb6970147",
+                            Id = "df0bcc96-2cf4-4f39-bde5-cdc10655d607",
+                            ConcurrencyStamp = "9473ee66-062f-4c31-b689-2c5ceee77602",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "7732456f-62fb-4df5-baf8-94c67a8ad184",
-                            ConcurrencyStamp = "1994d1f6-7818-4d0c-b5e1-f483739b444e",
+                            Id = "221ab9d4-bcdc-475a-a5dd-76a7915bf815",
+                            ConcurrencyStamp = "745712b0-88c5-48f6-878e-3c09fdb798a9",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         });
@@ -247,7 +249,7 @@ namespace TakeawayAPI.Data.AppMigrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("BuyerId")
+                    b.Property<string>("ByerId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -403,7 +405,7 @@ namespace TakeawayAPI.Data.AppMigrations
             modelBuilder.Entity("TakeawayAPI.Data.Models.Dish", b =>
                 {
                     b.HasOne("TakeawayAPI.Data.Models.Category", "Category")
-                        .WithMany("Dishes")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -414,11 +416,6 @@ namespace TakeawayAPI.Data.AppMigrations
             modelBuilder.Entity("TakeawayAPI.Data.Models.Basket", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("TakeawayAPI.Data.Models.Category", b =>
-                {
-                    b.Navigation("Dishes");
                 });
 #pragma warning restore 612, 618
         }
