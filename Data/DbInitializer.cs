@@ -54,18 +54,21 @@ namespace TakeawayAPI.Data
                 new Dish
                 {
                     Name = "Potato Slice",
+                    Description = "Potato Slice",
                     Price = 1f,
                     CategoryId = 1
                 },
                 new Dish
                 {
                     Name = "Ham & Cheese Battered",
+                    Description = "Ham & Cheese Battered",
                     Price = 2.5f,
                     CategoryId = 1
                 },
                 new Dish
                 {
                     Name = "Fish",
+                    Description = "Fish",
                     Price = 3.8f,
                     CategoryId = 1
                 },
@@ -73,24 +76,28 @@ namespace TakeawayAPI.Data
                 new Dish
                 {
                     Name = "Plain - Small",
+                    Description = "Plain - Small",
                     Price = 4f,
                     CategoryId = 2
                 },
                 new Dish
                 {
                     Name = "Plain - Large",
+                    Description = "Plain - Large",
                     Price = 6.8f,
                     CategoryId = 2
                 },
                 new Dish
                 {
                     Name = "Cheese - Small",
+                    Description = "Cheese - Small",
                     Price = 5.2f,
                     CategoryId = 2
                 },
                 new Dish
                 {
                     Name = "Cheese - Large",
+                    Description = "Cheese - Large",
                     Price = 6.8f,
                     CategoryId = 3
                 },
@@ -98,24 +105,28 @@ namespace TakeawayAPI.Data
                 new Dish
                 {
                     Name = "Chicken Chow Mein - Small",
+                    Description = "Chicken Chow Mein - Small",
                     Price = 10.5f,
                     CategoryId = 3
                 },
                 new Dish
                 {
                     Name = "Chicken Chow Mein - Large",
+                    Description = "Chicken Chow Mein - Large",
                     Price = 12.5f,
                     CategoryId = 3
                 },
                 new Dish
                 {
                     Name = "Beef Fried Rice - Small",
+                    Description = "Beef Fried Rice - Small",
                     Price = 10f,
                     CategoryId = 3
                 },
                 new Dish
                 {
                     Name = "Beef Fried Rice - Large",
+                    Description = "Beef Fried Rice - Large",
                     Price = 12f,
                     CategoryId = 3
                 },
@@ -123,18 +134,21 @@ namespace TakeawayAPI.Data
                 new Dish
                 {
                     Name = "Meal Deal A",
+                    Description = "Sweet & Sour Won Tons, Combination Fried Rice, and Combination Chow Mein.",
                     Price = 30f,
                     CategoryId = 4
                 },
                 new Dish
                 {
                     Name = "Meal Deal B",
+                    Description = "Sweet & Sour Pork, Combination Fried Rice, Sweet & Sour Won Tons, and Beef Black Bean Sauce.",
                     Price = 42f,
                     CategoryId = 4
                 },
                 new Dish
                 {
                     Name = "Meal Deal C",
+                    Description = "Sweet & Sour Won Tons, Combination Fried Rice, Chicken Cashew Nut, Combination Chow Mein, and Lemon Honey Chicken.",
                     Price = 55f,
                     CategoryId = 4
                 }
